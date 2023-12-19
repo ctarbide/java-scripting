@@ -1,0 +1,96 @@
+
+<<*>>=
+#!/bin/sh
+nofake --error -R'build java11' shell.nw build.nw
+# nofake --error -R'build java17' shell.nw build.nw
+# nofake --error -Rinstall shell.nw build.nw
+# nofake --list-roots build.nw
+@
+
+<<install prefix>>=
+~/local/bin
+@
+
+<<java11 home>>=
+/usr/lib/jvm/openjdk11
+@
+
+<<java17 home>>=
+/usr/lib/jvm/openjdk17
+@
+
+<<maven args - clean package>>=
+--fail-fast \
+-DskipTests -Dmaven.javadoc.skip=true \
+-Dmdep.outputFile=target/mdep.classpath \
+-Dmdep.regenerateFile=true \
+-DincludeScope=runtime \
+dependency:build-classpath \
+clean package
+@
+
+<<output nashorn.sh and abcl.sh>>=
+CHMOD='chmod 0555' nofake.sh --error -Rnashorn.sh -onashorn.sh shell.nw nashorn.nw
+CHMOD='chmod 0555' nofake.sh --error -Rabcl.sh -oabcl.sh shell.nw abcl.nw
+@
+
+<<add JAVA_HOME to PATH>>=
+PATH=${JAVA_HOME}/bin:${PATH}
+test -x "${JAVA_HOME}/bin/java" || die 1 "Error, 'java' not found in JAVA_HOME bin directory."
+test -x "${JAVA_HOME}/bin/javac" || die 1 "Error, 'javac' not found in JAVA_HOME bin directory."
+export JAVA_HOME
+@
+
+<<build java11>>=
+<<sh preamble>>
+<<output nashorn.sh and abcl.sh>>
+JAVA_HOME=<<java11 home>>
+<<add JAVA_HOME to PATH>>
+mvn <<maven args - clean package>>
+@
+
+<<build java17>>=
+<<sh preamble>>
+<<output nashorn.sh and abcl.sh>>
+JAVA_HOME=<<java17 home>>
+<<add JAVA_HOME to PATH>>
+mvn <<maven args - clean package>>
+@
+
+<<install>>=
+<<sh preamble>>
+mkdir -pv <<install prefix>>
+env cp -vL nashorn.sh abcl.sh target/nashorn.jar \
+    target/nashorn-config.inc.sh target/abcl-config.inc.sh \
+    nashorn-example.js <<install prefix>>
+env cp -vL target/mdep.classpath <<install prefix>>/nashorn.classpath
+env cp -vL target/nashorn.jar <<install prefix>>/abcl.jar
+env cp -vL target/mdep.classpath <<install prefix>>/abcl.classpath
+@
+
+<<list classpath>>=
+#!/bin/sh
+perl -l -072 -pe1 nashorn.classpath | LC_ALL=C sort | perl -lpe's,^/home/.*?/,~/,'
+@
+
+<<dependency tree>>=
+<<sh preamble>>
+mvn -Dscope=runtime dependency:tree
+@
+
+<<silly example>>=
+<<sh preamble>>
+./nashorn.sh nashorn-example.js
+@
+
+http://jsfiddle.net/russau/ch8PK
+
+<<totp example>>=
+<<sh preamble>>
+./nashorn.sh -strict totp.js -- --algo=sha1 --step=30 -d=6 -k- JBSWY3DPEHPK3PXP
+@
+
+<<indent pom.xml>>=
+<<sh preamble>>
+tidy -quiet -asxml -xml -indent -wrap 1024 -modify pom.xml
+@

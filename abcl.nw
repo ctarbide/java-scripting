@@ -1,0 +1,14 @@
+
+<<abcl.sh>>=
+<<sh preamble and set PATH and CLASSPATH>>
+
+if command -v rlwrap >/dev/null 2>&1; then
+    exec rlwrap <<java run>>
+else
+    exec <<java run>>
+fi
+@
+
+<<java run>>=
+java org.armedbear.lisp.Main "$@"
+@

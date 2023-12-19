@@ -1,0 +1,31 @@
+
+<<sh preamble>>=
+#!/bin/sh
+set -eu
+die(){ ev=$1; shift; for msg in "$@"; do echo "${msg}"; done; exit "${ev}"; }
+@
+
+<<sh preamble and set PATH and CLASSPATH>>=
+<<sh preamble>>
+
+thispath=`perl -MCwd=realpath -le'print(realpath(\$ARGV[0]))' -- "${0}"`
+thisprog=${thispath##*/}
+
+if [ -r "${thispath%*.sh}-config.inc.sh" ]; then
+    . "${thispath%*.sh}-config.inc.sh"
+    classpath_file=${thispath%*.sh}.classpath
+    CLASSPATH=${thispath%*.sh}.jar
+elif [ -r "target/${thisprog%*.sh}-config.inc.sh" ]; then
+    . "target/${thisprog%*.sh}-config.inc.sh"
+    classpath_file=target/mdep.classpath
+    CLASSPATH=target/classes
+else
+    die 1 "Error, could not find ${thispath%*.sh}-config.inc.sh."
+fi
+
+CLASSPATH=${CLASSPATH}:`cat "${classpath_file}"`
+export CLASSPATH
+
+PATH=${JAVA_HOME}/bin:${PATH}
+export PATH
+@

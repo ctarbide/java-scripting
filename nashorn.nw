@@ -1,0 +1,17 @@
+
+<<nashorn.sh>>=
+<<sh preamble and set PATH and CLASSPATH>>
+
+module_path=`perl -le'print(join(q{:}, map { m{^(.*) / (?: nashorn-core .* | asm .* ) \.jar$}xi ? $1 : () } split(q{:},$ENV{CLASSPATH})))'`
+
+if command -v rlwrap >/dev/null 2>&1; then
+    exec rlwrap <<java run>>
+else
+    exec <<java run>>
+fi
+@
+
+<<java run>>=
+java --module-path="${module_path}" --add-modules org.openjdk.nashorn \
+    org.openjdk.nashorn.tools.Shell --language=es6 "$@"
+@
