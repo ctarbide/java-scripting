@@ -8,7 +8,7 @@ nofake --error -R'build java11' shell.nw build.nw
 @
 
 <<install prefix>>=
-~/local/bin
+${HOME}/local/bin
 @
 
 <<java11 home>>=
@@ -59,13 +59,15 @@ mvn <<maven args - clean package>>
 
 <<install>>=
 <<sh preamble>>
-mkdir -pv <<install prefix>>
-env cp -vL nashorn.sh abcl.sh target/nashorn.jar \
+mkdir -pv "<<install prefix>>"
+env cp -vL nashorn.sh abcl.sh target/java-scripting.jar \
     target/nashorn-config.inc.sh target/abcl-config.inc.sh \
-    nashorn-example.js <<install prefix>>
-env cp -vL target/mdep.classpath <<install prefix>>/nashorn.classpath
-env cp -vL target/nashorn.jar <<install prefix>>/abcl.jar
-env cp -vL target/mdep.classpath <<install prefix>>/abcl.classpath
+    nashorn-example.js "<<install prefix>>"
+env cp -vL target/mdep.classpath "<<install prefix>>/nashorn.classpath"
+env cp -vL target/mdep.classpath "<<install prefix>>/abcl.classpath"
+env rm -fv "<<install prefix>>/nashorn.jar" "<<install prefix>>/abcl.jar"
+env ln -sv java-scripting.jar "<<install prefix>>/nashorn.jar"
+env ln -sv java-scripting.jar "<<install prefix>>/abcl.jar"
 @
 
 <<list classpath>>=

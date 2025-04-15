@@ -20,25 +20,35 @@ mdep-run.pl java org.openjdk.nashorn.tools.Shell -strict
     <!-- use UTF-8 for everything -->
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
     <!-- https://search.maven.org/artifact/org.apache.logging.log4j/log4j-bom -->
-    <log4j-bom.version>2.22.0</log4j-bom.version>
+    <log4j-bom.version>2.24.3</log4j-bom.version>
+
     <!-- https://search.maven.org/artifact/org.reactivestreams/reactive-streams -->
     <!-- https://search.maven.org/artifact/org.reactivestreams/reactive-streams-tck -->
     <reactive-streams.version>1.0.4</reactive-streams.version>
+
     <!-- https://search.maven.org/artifact/org.openjdk.nashorn/nashorn-core -->
-    <nashorn-core.version>15.4</nashorn-core.version>
+    <nashorn-core.version>15.6</nashorn-core.version>
+
     <!-- https://search.maven.org/artifact/org.bouncycastle/bcprov-jdk15to18 -->
-    <bouncycastle.version>1.77</bouncycastle.version>
+    <bouncycastle.version>1.80</bouncycastle.version>
+
     <!-- https://search.maven.org/artifact/commons-codec/commons-codec -->
-    <commons-codec.version>1.16.0</commons-codec.version>
+    <commons-codec.version>1.18.0</commons-codec.version>
+
     <!-- https://search.maven.org/artifact/org.apache.commons/commons-lang3 -->
-    <commons-lang3.version>3.14.0</commons-lang3.version>
+    <commons-lang3.version>3.17.0</commons-lang3.version>
+
     <!-- https://search.maven.org/artifact/org.apache.commons/commons-math3 -->
     <commons-math3.version>3.6.1</commons-math3.version>
+
     <!-- https://search.maven.org/artifact/org.hsqldb/hsqldb -->
-    <hsqldb.version>2.7.2</hsqldb.version>
+    <hsqldb.version>2.7.4</hsqldb.version>
+
     <!-- https://search.maven.org/artifact/org.hsqldb/sqltool -->
-    <sqltool.version>2.7.2</sqltool.version>
+    <sqltool.version>2.7.4</sqltool.version>
+
     <!-- https://search.maven.org/artifact/org.abcl/abcl -->
     <abcl.version>1.9.2</abcl.version>
   </properties>
@@ -124,17 +134,14 @@ mdep-run.pl java org.openjdk.nashorn.tools.Shell -strict
     <pluginManagement>
       <plugins>
         <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.8.1</version>
         </plugin>
         <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-dependency-plugin</artifactId>
           <version>3.1.1</version>
         </plugin>
         <plugin>
-          <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-resources-plugin</artifactId>
           <version>3.2.0</version>
         </plugin>
@@ -142,7 +149,6 @@ mdep-run.pl java org.openjdk.nashorn.tools.Shell -strict
     </pluginManagement>
     <plugins>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
         <executions>
           <execution>
@@ -160,7 +166,6 @@ mdep-run.pl java org.openjdk.nashorn.tools.Shell -strict
         </executions>
       </plugin>
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-resources-plugin</artifactId>
         <executions>
           <execution>
