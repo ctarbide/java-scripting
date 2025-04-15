@@ -3,6 +3,7 @@ package com.acme.labs;
 
 import java.math.BigInteger;
 import java.nio.charset.Charset;
+import java.util.Objects;
 
 public class StringID extends BigInteger implements Cloneable {
     private static final long serialVersionUID = 4637531275879698456L;
@@ -11,13 +12,7 @@ public class StringID extends BigInteger implements Cloneable {
 
     private String _id;
 
-    public static final int RADIX = Character.MAX_RADIX; /* this is expected to be 36 */
-
-    static {
-        if (RADIX != Math.abs(36)) { // to avoid dead code warning
-            throw new IllegalStateException();
-        }
-    }
+    public static final int RADIX = 36;
 
     public
     StringID(byte b[]) {
@@ -25,9 +20,15 @@ public class StringID extends BigInteger implements Cloneable {
         _id = super.toString(RADIX);
     }
 
+    private static byte[]
+    _validateAndGetBytes(String s) {
+        Objects.requireNonNull(s, "Input string cannot be null");
+        return s.getBytes(charsetUTF8);
+    }
+
     public
     StringID(String s) {
-        this(s.getBytes(charsetUTF8));
+        this(_validateAndGetBytes(s));
     }
 
     private
@@ -39,7 +40,10 @@ public class StringID extends BigInteger implements Cloneable {
     private static byte[]
     _verify(byte b[]) {
         if (b.length == 0) {
-            throw new IllegalArgumentException("empty byte array");
+            throw new IllegalArgumentException("Input is empty");
+        }
+        if (b.length > 1024) {
+            throw new IllegalArgumentException("Input bytes exceeds maximum length of 1024");
         }
 
         return b;
@@ -48,7 +52,7 @@ public class StringID extends BigInteger implements Cloneable {
     private static BigInteger
     _verify(BigInteger i) {
         if (i.signum() < 0) {
-            throw new IllegalArgumentException("negative value");
+            throw new IllegalArgumentException("Negative value");
         }
 
         return i;
@@ -57,13 +61,16 @@ public class StringID extends BigInteger implements Cloneable {
     @Override
     public String
     toString() {
+        if (_id == null) { /* _id maybe null after deserialization */
+            _id = super.toString(RADIX);
+        }
         return _id;
     }
 
     @Override
     public String
     toString(int radix) {
-        throw new RuntimeException("not available");
+        throw new UnsupportedOperationException("Custom radix not supported, StringID uses a fixed RADIX of 36 for a one-to-one representation");
     }
 
     public String
