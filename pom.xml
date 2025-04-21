@@ -43,6 +43,9 @@ mdep-run.pl java org.openjdk.nashorn.tools.Shell -strict
     <!-- https://search.maven.org/artifact/org.apache.commons/commons-math3 -->
     <commons-math3.version>3.6.1</commons-math3.version>
 
+    <!-- https://search.maven.org/artifact/org.apache.httpcomponents/httpclient -->
+    <httpclient.version>4.5.14</httpclient.version>
+
     <!-- https://search.maven.org/artifact/org.hsqldb/hsqldb -->
     <hsqldb.version>2.7.4</hsqldb.version>
 
@@ -107,6 +110,11 @@ mdep-run.pl java org.openjdk.nashorn.tools.Shell -strict
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-math3</artifactId>
       <version>${commons-math3.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>${httpclient.version}</version>
     </dependency>
     <dependency>
       <groupId>org.hsqldb</groupId>
