@@ -121,17 +121,34 @@ public class FileUtils {
     }
 
     public static void
+    byteArrayToOutputStream(byte[] ba, OutputStream out) throws IOException {
+        out.write(ba, 0 /* offset */, ba.length);
+    }
+
+    public static void
     byteBufferToFile(ByteBuffer buf, String out) throws IOException {
         OutputStream stream = null;
 
         try {
             stream = getBufferedFileOutputStream(out);
             byteBufferToOutputStream(buf, stream);
-            stream.close();
         } finally {
             if (stream != null) {
                 stream.close();
-                stream = null;
+            }
+        }
+    }
+
+    public static void
+    byteArrayToFile(byte[] ba, String out) throws IOException {
+        OutputStream stream = null;
+
+        try {
+            stream = getBufferedFileOutputStream(out);
+            byteArrayToOutputStream(ba, stream);
+        } finally {
+            if (stream != null) {
+                stream.close();
             }
         }
     }

@@ -68,8 +68,10 @@ var array_type = (function(global){
     import_('org.bouncycastle.crypto.digests.SHA512Digest');
     import_('org.bouncycastle.crypto.macs.HMac');
     import_('org.bouncycastle.crypto.params.KeyParameter');
+    import_('org.bouncycastle.crypto.params.ParametersWithIV');
     import_('org.bouncycastle.jce.provider.BouncyCastleProvider');
     import_('org.bouncycastle.util.encoders.Hex');
+    import_('org.bouncycastle.util.encoders.Base64');
 
     import_('byte[]', 'ByteArray');
     import_('char[]', 'CharArray');
